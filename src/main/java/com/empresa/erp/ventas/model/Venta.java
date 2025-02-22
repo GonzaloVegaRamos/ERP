@@ -15,35 +15,33 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "ventas")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Venta {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "cliente_id", nullable = false)
-    @NotNull(message = "La venta debe estar asociada a un cliente")
-    private Cliente cliente;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "cliente_id", nullable = false)
+	@NotNull(message = "La venta debe estar asociada a un cliente")
+	private Cliente cliente;
 
-    @NotNull(message = "La fecha no puede ser nula")
-    private LocalDate fecha;
+	@NotNull(message = "La fecha no puede ser nula")
+	private LocalDate fecha;
 
-    private Double total; 
-    
+	private Double total;
+
 	@OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
 	private List<DetalleVenta> detalles;
-	
-    // Constructor vacío requerido por JPA
-    public Venta() {
-    	this.detalles = new ArrayList<DetalleVenta>();
-    }
 
-    public Venta(Cliente cliente, Double total, LocalDate fecha) {
-        this.cliente = cliente;
-        this.total = total;
-        this.fecha = fecha;
-    }
+	public Venta() {
+		this.detalles = new ArrayList<DetalleVenta>();
+	}
 
-    // Getters y Setters
+	public Venta(Cliente cliente, Double total, LocalDate fecha) {
+		this.cliente = cliente;
+		this.total = total;
+		this.fecha = fecha;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -83,10 +81,7 @@ public class Venta {
 	public void setDetalles(List<DetalleVenta> detalles) {
 		this.detalles = detalles;
 		for (DetalleVenta detalle : detalles) {
-			detalle.setVenta(this);  // Aquí estableces la venta en cada detalle
+			detalle.setVenta(this);
 		}
 	}
-	
-
-	
 }

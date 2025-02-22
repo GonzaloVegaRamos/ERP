@@ -1,6 +1,10 @@
 package com.empresa.erp.inventario.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -23,7 +27,6 @@ public class Producto {
 	@Positive(message = "El stock debe ser mayor o igual a 0")
 	private Integer stock;
 
-	// Constructor vacío requerido por JPA
 	public Producto() {
 	}
 
@@ -33,7 +36,6 @@ public class Producto {
 		this.stock = stock;
 	}
 
-	// Getters y Setters
 	public Long getId() {
 		return id;
 	}

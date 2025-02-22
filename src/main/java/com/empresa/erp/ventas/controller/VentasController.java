@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;  // Importamos PutMapping
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,40 +24,35 @@ public class VentasController {
     @Autowired
     private VentaService servicio;
 
-    // Obtener todas las ventas
     @GetMapping
     public List<Venta> listarVentas() {
         return servicio.obtenerTodas();
     }
 
-    // Obtener una venta por su ID
     @GetMapping("/{id}")
     public Venta obtenerVenta(@PathVariable Long id) {
         return servicio.obtenerVentaPorId(id);
     }
 
-    // Crear una nueva venta
     @PostMapping
     public Venta crearVenta(@RequestBody Venta venta) {
         return servicio.guardarVenta(venta);
     }
 
-    // Eliminar una venta por su ID
     @DeleteMapping("/{id}")
     public void eliminarVenta(@PathVariable Long id) {
         servicio.eliminarVenta(id);
     }
 
-    // Actualizar una venta existente (PUT)
     @PutMapping("/{id}")
     public Venta actualizarVenta(@PathVariable Long id, @RequestBody Venta ventaActualizada) {
-        return servicio.actualizarVenta(id, ventaActualizada);  // Llamamos al servicio para actualizar
+        return servicio.actualizarVenta(id, ventaActualizada);
     }
 
     @GetMapping("/paginado")
     public Page<Venta> listarVentasPaginadas(
-        @RequestParam(defaultValue = "0") int page, 
-        @RequestParam(defaultValue = "5") int size) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
         return servicio.listarVentasPaginadas(page, size);
     }
 }

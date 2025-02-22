@@ -22,33 +22,28 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    // Obtener todos los clientes
     @GetMapping
     public List<Cliente> listarClientes() {
         return clienteService.obtenerTodos();
     }
 
-    // Obtener cliente por ID
     @GetMapping("/{id}")
     public Cliente obtenerCliente(@PathVariable Long id) {
         return clienteService.obtenerClientePorId(id);
     }
 
-    // Crear o actualizar cliente
     @PostMapping
     public Cliente crearCliente(@RequestBody Cliente cliente) {
         return clienteService.guardarCliente(cliente);
     }
 
-    // Eliminar cliente por ID
     @DeleteMapping("/{id}")
     public void eliminarCliente(@PathVariable Long id) {
         clienteService.eliminarCliente(id);
     }
 
-        
-        @PutMapping("/{id}")
-        public Cliente actualizarCliente(@PathVariable Long id, @RequestBody Cliente clienteActualizado) {
-            return clienteService.actualizarCliente(id, clienteActualizado);
-        }
+    @PutMapping("/{id}")
+    public Cliente actualizarCliente(@PathVariable Long id, @RequestBody Cliente clienteActualizado) {
+        return clienteService.actualizarCliente(id, clienteActualizado);
+    }
 }

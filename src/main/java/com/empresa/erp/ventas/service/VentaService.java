@@ -1,26 +1,27 @@
 package com.empresa.erp.ventas.service;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
 import com.empresa.erp.inventario.model.Producto;
 import com.empresa.erp.inventario.repository.ProductoRepository;
 import com.empresa.erp.ventas.model.DetalleVenta;
 import com.empresa.erp.ventas.model.Venta;
 import com.empresa.erp.ventas.repository.VentasRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Page;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class VentaService {
     @Autowired
     private VentasRepository ventaRepository;
-    
+
     @Autowired
-    private ProductoRepository productoRepository; // Agregar el repositorio para recuperar productos
+    private ProductoRepository productoRepository;
 
     public List<Venta> obtenerTodas() {
         return ventaRepository.findAll();
@@ -39,7 +40,8 @@ public class VentaService {
         double total = 0;
         for (DetalleVenta detalle : venta.getDetalles()) {
             Producto producto = productoRepository.findById(detalle.getProducto().getId())
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + detalle.getProducto().getId()));
+                    .orElseThrow(() -> new RuntimeException(
+                            "Producto no encontrado con ID: " + detalle.getProducto().getId()));
 
             if (producto.getStock() < detalle.getCantidad()) {
                 throw new RuntimeException("Stock insuficiente para el producto: " + producto.getNombre());
@@ -57,7 +59,6 @@ public class VentaService {
         venta.setTotal(total);
         Venta ventaGuardada = ventaRepository.save(venta);
 
-        // Recuperar la venta con el cliente completamente cargado antes de devolverla
         return ventaRepository.findById(ventaGuardada.getId()).orElseThrow();
     }
 
@@ -69,11 +70,11 @@ public class VentaService {
             return ventaRepository.save(venta);
         }).orElseThrow(() -> new RuntimeException("Venta no encontrada"));
     }
-    
+
     public void eliminarVenta(Long id) {
         ventaRepository.deleteById(id);
     }
-    
+
     public Double obtenerTotalVentasDelMes() {
         return ventaRepository.obtenerTotalVentasDelMes();
     }
@@ -87,11 +88,8 @@ public class VentaService {
         return ventasPorMes;
     }
 
-
-        // Método para listar las ventas paginadas
     public Page<Venta> listarVentasPaginadas(int page, int size) {
-        return ventaRepository.findAll(PageRequest.of(page, size));  // Usa PageRequest para paginar
+        return ventaRepository.findAll(PageRequest.of(page, size)); // Usa PageRequest para paginar
     }
-
 
 }
